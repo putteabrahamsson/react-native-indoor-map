@@ -16,7 +16,10 @@
     "indoor map",
     "map",
     "indoor-map",
-    "markers"
+    "markers",
+    "react-native-indoor-map",
+    "react native indoor map",
+    "indoor"
   ],
   "devDependencies": {
     "@types/react": "^18.0.12",

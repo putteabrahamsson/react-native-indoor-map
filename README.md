@@ -15,7 +15,7 @@ npm install react-native-indoor-map
 ## Usage
 
 ```javascript
-import Map from "react-native-indoor-map";
+import { Map } from "react-native-indoor-map";
 ```
 
 ```javascript

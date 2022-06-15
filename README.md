@@ -66,6 +66,8 @@ import Map from "react-native-indoor-map";
 | sensitivity     | number | false    |
 | showResetButton | string | false    |
 
+---
+
 ### mapUrl
 
 URL to a SVG map.

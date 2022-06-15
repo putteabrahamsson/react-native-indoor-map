@@ -34,13 +34,11 @@ import Map from "react-native-indoor-map";
 
 ## Available props for mapStyle
 
-| Name               | Type          | Required |
-| ------------------ | ------------- | -------- |
-| size               | string        | true     |
-| backgroundColor    | function      | false    |
-| mapBackgroundColor | MapProps      | false    |
-| markers            | MarkerProps[] | false    |
-| zoomOptions        | ZoomProps     | false    |
+| Name               | Type     | Required |
+| ------------------ | -------- | -------- |
+| size               | string   | true     |
+| backgroundColor    | function | false    |
+| mapBackgroundColor | MapProps | false    |
 
 ## Available props for markers
 
@@ -67,6 +65,39 @@ import Map from "react-native-indoor-map";
 | hideZoom        | number | false    |
 | sensitivity     | number | false    |
 | showResetButton | string | false    |
+
+### mapUrl
+
+URL to a SVG map.
+
+Example:
+[https://svgshare.com/i/iAX.svg](https://svgshare.com/i/iAX.svg)
+
+---
+
+### onMarkerPress
+
+Function when pressing a marker
+
+---
+
+### mapStyle
+
+A prop for styling the map with size, background color & background color of the map
+
+---
+
+### markers
+
+An array with the type `MarkerProps[]`, this is useable if you wanna place markers on your map
+
+---
+
+### zoomOptions
+
+An object with the type `ZoomProps`, this is useable if you wanna change settings on map, for example `sensitivity` which sets how much you zoom in per press.
+
+---
 
 ## Contributing
 

@@ -1,14 +1,9 @@
-import React, { FC, useRef, useState } from 'react';
-import {
-  StyleSheet,
-  View,
-  PanResponder,
-  Animated,
-} from 'react-native';
-import { SvgUri } from 'react-native-svg';
-import Marker, { MarkerProps } from './components/Marker';
-import Zoom, { ZoomProps } from './components/Zoom';
-import { Config } from './config';
+import React, { FC, useRef, useState } from "react";
+import { StyleSheet, View, PanResponder, Animated } from "react-native";
+import { SvgUri } from "react-native-svg";
+import Marker, { MarkerProps } from "./components/Marker";
+import Zoom, { ZoomProps } from "./components/Zoom";
+import { Config } from "./config";
 
 type MapProps = {
   size?: number;
@@ -33,9 +28,7 @@ const Map: FC<Props> = ({
 }) => {
   const { DEFAULT_ZOOM, DEFAULT_MAP_SIZE } = Config;
 
-  const [zoom, setZoom] = useState(
-    zoomOptions?.zoom ?? DEFAULT_ZOOM,
-  );
+  const [zoom, setZoom] = useState(zoomOptions?.zoom ?? DEFAULT_ZOOM);
 
   const pan = useRef(new Animated.ValueXY()).current;
 
@@ -48,53 +41,58 @@ const Map: FC<Props> = ({
           y: (pan.y as any)._value,
         });
       },
-      onPanResponderMove: Animated.event([
-        null,
-        { dx: pan.x, dy: pan.y },
-      ]),
+      onPanResponderMove: Animated.event(
+        [null, { dx: pan.x, dy: pan.y }],
+        undefined
+      ),
       onPanResponderRelease: () => {
         pan.flattenOffset();
       },
-    }),
+    })
   ).current;
 
   return (
-    <View
-      style={[
-        styles.outerMapPart,
-        { backgroundColor: mapStyle?.backgroundColor },
-      ]}>
-      <Animated.View
+    <View style={styles.wrapper}>
+      <View
         style={[
-          styles.innerMapPart,
-          {
-            width: mapStyle?.size ?? DEFAULT_MAP_SIZE,
-            height: mapStyle?.size ?? DEFAULT_MAP_SIZE,
-            transform: [
-              { translateX: pan.x },
-              { translateY: pan.y },
-              { scale: zoom },
-            ],
-            backgroundColor: mapStyle?.mapBackgroundColor,
-          },
+          styles.outerMapPart,
+          { backgroundColor: mapStyle?.backgroundColor },
         ]}
-        {...panResponder.panHandlers}>
-        <SvgUri uri={mapUrl} />
+      >
+        <Animated.View
+          style={[
+            styles.innerMapPart,
+            {
+              width: mapStyle?.size ?? DEFAULT_MAP_SIZE,
+              height: mapStyle?.size ?? DEFAULT_MAP_SIZE,
+              transform: [
+                { translateX: pan.x },
+                { translateY: pan.y },
+                { scale: zoom },
+              ],
+              backgroundColor: mapStyle?.mapBackgroundColor,
+            },
+          ]}
+          {...panResponder.panHandlers}
+        >
+          <SvgUri uri={mapUrl} fill={Config.DEFAULT_TEXTCOLOR} />
 
-        {markers?.map((marker) => (
-          <Marker
-            text={marker?.text}
-            value={marker?.value}
-            width={marker?.width}
-            height={marker?.height}
-            x={marker?.x}
-            y={marker?.y}
-            onPress={onMarkerPress}
-            textDelay={marker?.textDelay}
-            color={marker?.color}
-          />
-        ))}
-      </Animated.View>
+          {markers?.map((marker, index) => (
+            <Marker
+              key={marker?.value + index}
+              text={marker?.text}
+              value={marker?.value}
+              width={marker?.width}
+              height={marker?.height}
+              x={marker?.x}
+              y={marker?.y}
+              onPress={onMarkerPress}
+              textDelay={marker?.textDelay}
+              color={marker?.color}
+            />
+          ))}
+        </Animated.View>
+      </View>
 
       {!zoomOptions?.hideZoom && (
         <Zoom
@@ -119,15 +117,19 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 8,
   },
+  wrapper: {
+    flex: 1,
+  },
   outerMapPart: {
     flex: 1,
-    overflow: 'hidden',
+    overflow: "hidden",
+    justifyContent: "center",
+    alignItems: "center",
   },
   innerMapPart: {
     zIndex: -1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

@@ -1,12 +1,13 @@
-import React, { FC } from 'react';
+import React, { FC } from "react";
 import {
   StyleSheet,
   TouchableOpacity,
   Text,
   View,
   ViewStyle,
-} from 'react-native';
-import { Config } from '../../config';
+} from "react-native";
+import { SvgUri } from "react-native-svg";
+import { Config } from "../../config";
 
 export type ZoomProps = {
   zoom: number;
@@ -15,6 +16,7 @@ export type ZoomProps = {
   hideZoom?: boolean;
   sensitivity?: number;
   showResetButton?: boolean;
+  resetIconUri?: string;
 };
 
 type ExtendedZoomProps = {
@@ -30,8 +32,9 @@ const Zoom: FC<ExtendedZoomProps> = ({
   zoomStyle,
   sensitivity = 1,
   showResetButton,
+  resetIconUri,
 }) => {
-  const disabledPlus = zoom >= maxZoom + 1;
+  const disabledPlus = maxZoom ? zoom >= maxZoom + 1 : false;
   const disabledNegative = zoom <= 1;
 
   return (
@@ -43,7 +46,8 @@ const Zoom: FC<ExtendedZoomProps> = ({
           disabledPlus && styles.zoomDisabled,
         ]}
         onPress={() => onZoomChanged(zoom + sensitivity)}
-        disabled={disabledPlus}>
+        disabled={disabledPlus}
+      >
         <Text style={styles.zoomText}>+</Text>
       </TouchableOpacity>
 
@@ -54,7 +58,8 @@ const Zoom: FC<ExtendedZoomProps> = ({
           disabledNegative && styles.zoomDisabled,
         ]}
         onPress={() => onZoomChanged(zoom - sensitivity)}
-        disabled={disabledNegative}>
+        disabled={disabledNegative}
+      >
         <Text style={styles.zoomText}>-</Text>
       </TouchableOpacity>
 
@@ -63,11 +68,18 @@ const Zoom: FC<ExtendedZoomProps> = ({
           style={[
             styles.zoomButton,
             zoomStyle,
-            { marginTop: 20 },
+            disabledNegative && styles.zoomDisabled,
+            styles.spacer,
           ]}
           onPress={onReset}
-          disabled={disabledNegative}>
-          <Text style={styles.zoomText}>R</Text>
+          disabled={disabledNegative}
+        >
+          <SvgUri
+            uri={resetIconUri ?? Config.RESET_ICON}
+            fill={Config.DEFAULT_BG_COLOR}
+            width={Config.RESET_SIZE}
+            height={Config.RESET_SIZE}
+          />
         </TouchableOpacity>
       )}
     </View>
@@ -76,15 +88,18 @@ const Zoom: FC<ExtendedZoomProps> = ({
 
 const styles = StyleSheet.create({
   group: {
-    position: 'absolute',
+    position: "absolute",
     zIndex: 3000,
+  },
+  spacer: {
+    marginTop: 20,
   },
   zoomButton: {
     backgroundColor: String(Config.ZOOM_BG_COLOR),
     width: 30,
     height: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   zoomDisabled: {
     backgroundColor: String(Config.ZOOM_DISABLED),

@@ -4,6 +4,8 @@ react-native-indoor-map is a library for displaying an indoor map built in svg-f
 
 Library for React Native - TypeScript
 
+!! Still under Beta !!
+
 ## Installation
 
 Npm
@@ -34,11 +36,11 @@ import { Map } from "react-native-indoor-map";
 
 ## Available props for mapStyle
 
-| Name               | Type     | Required |
-| ------------------ | -------- | -------- |
-| size               | string   | true     |
-| backgroundColor    | function | false    |
-| mapBackgroundColor | MapProps | false    |
+| Name               | Type   | Required |
+| ------------------ | ------ | -------- |
+| size               | string | true     |
+| backgroundColor    | string | false    |
+| mapBackgroundColor | string | false    |
 
 ## Available props for markers
 
@@ -57,14 +59,14 @@ import { Map } from "react-native-indoor-map";
 
 ## Available props for zoomOptions
 
-| Name            | Type   | Required |
-| --------------- | ------ | -------- |
-| zoom            | number | true     |
-| maxZoom         | number | false    |
-| zoomStyle       | number | false    |
-| hideZoom        | number | false    |
-| sensitivity     | number | false    |
-| showResetButton | string | false    |
+| Name            | Type      | Required |
+| --------------- | --------- | -------- |
+| zoom            | number    | false    |
+| maxZoom         | number    | false    |
+| zoomStyle       | ViewStyle | false    |
+| hideZoom        | boolean   | false    |
+| sensitivity     | number    | false    |
+| showResetButton | string    | false    |
 
 ---
 
@@ -100,6 +102,14 @@ An array with the type `MarkerProps[]`, this is useable if you wanna place marke
 An object with the type `ZoomProps`, this is useable if you wanna change settings on map, for example `sensitivity` which sets how much you zoom in per press.
 
 ---
+
+## Upcoming news
+
+We plan on releasing some new updates to the package.
+
+- Support for multiple floors
+- Pinch to zoom
+- More configuration
 
 ## Contributing
 

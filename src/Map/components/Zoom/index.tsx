@@ -10,7 +10,7 @@ import { SvgUri } from "react-native-svg";
 import { Config } from "../../config";
 
 export type ZoomProps = {
-  zoom: number;
+  zoom?: number;
   maxZoom?: number;
   zoomStyle?: ViewStyle;
   hideZoom?: boolean;
@@ -27,7 +27,7 @@ type ExtendedZoomProps = {
 const Zoom: FC<ExtendedZoomProps> = ({
   onZoomChanged,
   onReset,
-  zoom,
+  zoom = 1,
   maxZoom,
   zoomStyle,
   sensitivity = 1,
@@ -63,7 +63,7 @@ const Zoom: FC<ExtendedZoomProps> = ({
         <Text style={styles.zoomText}>-</Text>
       </TouchableOpacity>
 
-      {showResetButton && (
+      {showResetButton && zoom > 1 && (
         <TouchableOpacity
           style={[
             styles.zoomButton,

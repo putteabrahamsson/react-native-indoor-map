@@ -38,7 +38,7 @@ import { Map } from "react-native-indoor-map";
 
 | Name               | Type   | Required |
 | ------------------ | ------ | -------- |
-| size               | string | false    |
+| size               | number | false    |
 | backgroundColor    | string | false    |
 | mapBackgroundColor | string | false    |
 

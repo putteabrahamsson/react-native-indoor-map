@@ -60,6 +60,9 @@ We plan on releasing some new updates to the package.
 ## Example project
 
 ![floor1](https://user-images.githubusercontent.com/56152205/174472975-96bb73f5-c496-4f30-bb7e-1394ebe024e5.png)
+
+---
+
 ![floor2](https://user-images.githubusercontent.com/56152205/174472976-5a10aba8-ebb0-4247-94e9-9c425f861adf.png)
 
 

@@ -1,27 +1,13 @@
-import React, { FC } from "react";
-import {
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-  View,
-  ViewStyle,
-} from "react-native";
-import { SvgUri } from "react-native-svg";
-import { Config } from "../../config";
-
-export type ZoomProps = {
-  zoom?: number;
-  maxZoom?: number;
-  zoomStyle?: ViewStyle;
-  hideZoom?: boolean;
-  sensitivity?: number;
-  showResetButton?: boolean;
-  resetIconUri?: string;
-};
+import React, { FC } from 'react';
+import { Config } from '../../config';
+import { ZoomProps } from '../../types';
+import CircleButton from '../CircleButton';
+import Spacer from '../Spacer';
 
 type ExtendedZoomProps = {
   onZoomChanged: (value: number) => void;
   onReset?: () => void;
+  buttonGap?: number;
 } & ZoomProps;
 
 const Zoom: FC<ExtendedZoomProps> = ({
@@ -29,85 +15,57 @@ const Zoom: FC<ExtendedZoomProps> = ({
   onReset,
   zoom = 1,
   maxZoom,
-  zoomStyle,
   sensitivity = 1,
   showResetButton,
-  resetIconUri,
+  hideZoom,
+  zoomColor,
+  zoomDisabledColor,
+  circleColor,
+  buttonGap,
 }) => {
-  const disabledPlus = maxZoom ? zoom >= maxZoom + 1 : false;
+  const disabledPlus = maxZoom
+    ? zoom >= maxZoom + 1
+    : undefined;
   const disabledNegative = zoom <= 1;
 
+  if (hideZoom) return <></>;
   return (
-    <View style={styles.group}>
-      <TouchableOpacity
-        style={[
-          styles.zoomButton,
-          zoomStyle,
-          disabledPlus && styles.zoomDisabled,
-        ]}
+    <>
+      <CircleButton
         onPress={() => onZoomChanged(zoom + sensitivity)}
+        src={String(Config.ZOOM_PLUS_ICON)}
         disabled={disabledPlus}
-      >
-        <Text style={styles.zoomText}>+</Text>
-      </TouchableOpacity>
+        color={zoomColor}
+        colorDisabled={zoomDisabledColor}
+        circleColor={circleColor}
+      />
 
-      <TouchableOpacity
-        style={[
-          styles.zoomButton,
-          zoomStyle,
-          disabledNegative && styles.zoomDisabled,
-        ]}
+      <Spacer gap={buttonGap ?? 4} vertical />
+
+      <CircleButton
         onPress={() => onZoomChanged(zoom - sensitivity)}
+        src={String(Config.ZOOM_MINUS_ICON)}
         disabled={disabledNegative}
-      >
-        <Text style={styles.zoomText}>-</Text>
-      </TouchableOpacity>
+        color={zoomColor}
+        colorDisabled={zoomDisabledColor}
+        circleColor={circleColor}
+      />
 
       {showResetButton && zoom > 1 && (
-        <TouchableOpacity
-          style={[
-            styles.zoomButton,
-            zoomStyle,
-            disabledNegative && styles.zoomDisabled,
-            styles.spacer,
-          ]}
-          onPress={onReset}
-          disabled={disabledNegative}
-        >
-          <SvgUri
-            uri={resetIconUri ?? Config.RESET_ICON}
-            fill={Config.DEFAULT_BG_COLOR}
-            width={Config.RESET_SIZE}
-            height={Config.RESET_SIZE}
+        <>
+          <Spacer gap={buttonGap ?? 4} vertical />
+          <CircleButton
+            onPress={onReset}
+            src={String(Config.RESET_ICON)}
+            disabled={disabledPlus}
+            color={zoomColor}
+            colorDisabled={zoomDisabledColor}
+            circleColor={circleColor}
           />
-        </TouchableOpacity>
+        </>
       )}
-    </View>
+    </>
   );
 };
-
-const styles = StyleSheet.create({
-  group: {
-    position: "absolute",
-    zIndex: 3000,
-  },
-  spacer: {
-    marginTop: 20,
-  },
-  zoomButton: {
-    backgroundColor: String(Config.ZOOM_BG_COLOR),
-    width: 30,
-    height: 30,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  zoomDisabled: {
-    backgroundColor: String(Config.ZOOM_DISABLED),
-  },
-  zoomText: {
-    color: String(Config.ZOOM_TEXT),
-    fontSize: 20,
-  },
-});
 
 export default Zoom;

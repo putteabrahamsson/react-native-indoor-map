@@ -1,34 +1,42 @@
-import React, { FC, useRef, useState } from "react";
-import { StyleSheet, View, PanResponder, Animated } from "react-native";
-import { SvgUri } from "react-native-svg";
-import Marker, { MarkerProps } from "./components/Marker";
-import Zoom, { ZoomProps } from "./components/Zoom";
-import { Config } from "./config";
-
-type MapProps = {
-  size?: number;
-  backgroundColor?: string;
-  mapBackgroundColor?: string;
-};
+import React, { FC, useRef, useState } from 'react';
+import {
+  StyleSheet,
+  View,
+  PanResponder,
+  Animated,
+} from 'react-native';
+import { SvgUri } from 'react-native-svg';
+import Marker from './components/Marker';
+import { Config } from './config';
+import { FloorProps, HeaderProps, MapProps } from './types';
+import Header from './components/Header';
 
 type Props = {
-  mapUrl: string;
-  onMarkerPress?: (marker: any) => void;
+  mapUrls: FloorProps[];
+  floor?: number;
+  setFloor?: (floor: number) => void;
   mapStyle?: MapProps;
-  markers?: MarkerProps[];
-  zoomOptions?: ZoomProps;
+  header?: HeaderProps;
+  onMarkerPress?: (marker: any) => void;
 };
 
 const Map: FC<Props> = ({
-  mapUrl,
-  onMarkerPress,
+  mapUrls,
+  floor = 0,
+  setFloor,
   mapStyle,
-  markers,
-  zoomOptions,
+  header,
+  onMarkerPress,
 }) => {
   const { DEFAULT_ZOOM, DEFAULT_MAP_SIZE } = Config;
 
-  const [zoom, setZoom] = useState(zoomOptions?.zoom ?? DEFAULT_ZOOM);
+  const findFloor = () =>
+    mapUrls?.find((obj) => obj.floor === floor) ??
+    mapUrls[0];
+
+  const [zoom, setZoom] = useState(
+    header?.zoomOptions?.zoom ?? DEFAULT_ZOOM,
+  );
 
   const pan = useRef(new Animated.ValueXY()).current;
 
@@ -41,23 +49,47 @@ const Map: FC<Props> = ({
           y: (pan.y as any)._value,
         });
       },
-      onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {
-        useNativeDriver: false,
-      }),
+      onPanResponderMove: Animated.event(
+        [null, { dx: pan.x, dy: pan.y }],
+        { useNativeDriver: false },
+      ),
       onPanResponderRelease: () => {
         pan.flattenOffset();
       },
-    })
+    }),
   ).current;
+
+  const resetZoom = () => {
+    setZoom(DEFAULT_ZOOM);
+    pan.setValue({ x: 0, y: 0 });
+  };
 
   return (
     <View style={styles.wrapper}>
+      <Header
+        floor={floor}
+        mapUrls={mapUrls}
+        onZoomReset={resetZoom}
+        setFloor={setFloor}
+        setZoom={setZoom}
+        zoom={zoom}
+        allowFloorDropdown={header?.allowFloorDropdown}
+        floorText={header?.floorText}
+        showHeader={header?.showHeader}
+        showFloors={header?.showFloors}
+        zoomOptions={header?.zoomOptions}
+        alignment={header?.alignment}
+        headerOnRight={header?.headerOnRight}
+        floorButtonColor={header?.floorButtonColor}
+        floorCircleColor={header?.floorCircleColor}
+        buttonGap={header?.buttonGap}
+      />
+
       <View
         style={[
           styles.outerMapPart,
           { backgroundColor: mapStyle?.backgroundColor },
-        ]}
-      >
+        ]}>
         <Animated.View
           style={[
             styles.innerMapPart,
@@ -72,13 +104,12 @@ const Map: FC<Props> = ({
               backgroundColor: mapStyle?.mapBackgroundColor,
             },
           ]}
-          {...panResponder.panHandlers}
-        >
-          <SvgUri uri={mapUrl} fill={Config.DEFAULT_TEXTCOLOR} />
+          {...panResponder.panHandlers}>
+          <SvgUri uri={findFloor()?.url} fill="black" />
 
-          {markers?.map((marker, index) => (
+          {findFloor()?.markers?.map((marker, index) => (
             <Marker
-              key={marker?.value + index}
+              key={marker.value + index}
               text={marker?.text}
               value={marker?.value}
               width={marker?.width}
@@ -88,25 +119,15 @@ const Map: FC<Props> = ({
               onPress={onMarkerPress}
               textDelay={marker?.textDelay}
               color={marker?.color}
+              isStairs={marker?.isStairs}
+              iconUrl={marker?.iconUrl}
+              iconSize={marker?.iconSize}
+              iconColor={marker?.iconColor}
+              iconRotate={marker?.iconRotate}
             />
           ))}
         </Animated.View>
       </View>
-
-      {!zoomOptions?.hideZoom && (
-        <Zoom
-          zoom={zoom}
-          onZoomChanged={(value) => setZoom(value)}
-          maxZoom={zoomOptions?.maxZoom}
-          zoomStyle={zoomOptions?.zoomStyle}
-          sensitivity={zoomOptions?.sensitivity}
-          showResetButton={zoomOptions?.showResetButton}
-          onReset={() => {
-            setZoom(1);
-            pan.setValue({ x: 0, y: 0 });
-          }}
-        />
-      )}
     </View>
   );
 };
@@ -121,14 +142,14 @@ const styles = StyleSheet.create({
   },
   outerMapPart: {
     flex: 1,
-    overflow: "hidden",
-    justifyContent: "center",
-    alignItems: "center",
+    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   innerMapPart: {
     zIndex: -1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

@@ -14,6 +14,12 @@ Npm
 npm install react-native-indoor-map
 ```
 
+Yarn
+
+```bash
+yarn add react-native-indoor-map
+```
+
 ## Usage
 
 ```javascript
@@ -24,58 +30,9 @@ import { Map } from "react-native-indoor-map";
 <Map mapUrl={mapUrl} />
 ```
 
-## Available props for map
-
-| Name          | Type          | Required |
-| ------------- | ------------- | -------- |
-| mapUrl        | string        | true     |
-| onMarkerPress | function      | false    |
-| mapStyle      | MapProps      | false    |
-| markers       | MarkerProps[] | false    |
-| zoomOptions   | ZoomProps     | false    |
-
-## MapProps
-
-| Name               | Type   | Required |
-| ------------------ | ------ | -------- |
-| size               | number | false    |
-| backgroundColor    | string | false    |
-| mapBackgroundColor | string | false    |
-
-## MarkerProps[]
-
-| Name        | Type      | Required |
-| ----------- | --------- | -------- |
-| value       | string    | true     |
-| width       | number    | true     |
-| height      | number    | true     |
-| x           | number    | true     |
-| y           | number    | true     |
-| text        | string    | false    |
-| textStyle   | TextStyle | false    |
-| markerStyle | ViewStyle | false    |
-| textDelay   | number    | false    |
-| color       | string    | false    |
-
-## ZoomProps
-
-| Name            | Type      | Required |
-| --------------- | --------- | -------- |
-| zoom            | number    | false    |
-| maxZoom         | number    | false    |
-| zoomStyle       | ViewStyle | false    |
-| hideZoom        | boolean   | false    |
-| sensitivity     | number    | false    |
-| showResetButton | boolean   | false    |
-
----
-
 ### mapUrl
 
-URL to a SVG map
-
-Example:
-[https://svgshare.com/i/iAX.svg](https://svgshare.com/i/iAX.svg)
+Will be updated
 
 ---
 
@@ -91,23 +48,10 @@ A prop for styling the map with size, background color & background color of the
 
 ---
 
-### markers
-
-An array with the type `MarkerProps[]`, this is useable if you wanna place markers on your map
-
----
-
-### zoomOptions
-
-An object with the type `ZoomProps`, this is useable if you want to change settings for the zoom, for example `sensitivity` which sets how much you zoom in per press
-
----
-
 ## Upcoming news
 
 We plan on releasing some new updates to the package.
 
-- Support for multiple floors
 - Pinch to zoom
 - More configuration
 

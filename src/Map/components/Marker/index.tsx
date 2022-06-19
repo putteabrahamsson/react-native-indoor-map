@@ -4,28 +4,10 @@ import {
   TouchableOpacity,
   StyleSheet,
   Text,
-  ViewStyle,
 } from 'react-native';
+import { SvgUri } from 'react-native-svg';
 import { Config } from '../../config';
-
-type TextStyle = {
-  backgroundColor: string;
-  textColor: string;
-  fontSize: number;
-};
-
-export type MarkerProps = {
-  value: string;
-  width: number;
-  height: number;
-  x: number;
-  y: number;
-  text?: string;
-  textStyle?: TextStyle;
-  markerStyle?: ViewStyle;
-  textDelay?: number;
-  color?: string;
-};
+import { MarkerProps } from '../../types';
 
 type MarkerPropsExtended = {
   onPress?: (marker: any) => void;
@@ -43,11 +25,17 @@ const Marker: FC<MarkerPropsExtended> = ({
   onPress,
   textDelay,
   color,
+  iconUrl,
+  isStairs,
+  iconSize,
+  iconColor,
+  iconRotate,
 }) => {
   const {
     DEFAULT_BG_COLOR,
     DEFAULT_TEXTCOLOR,
     DEFAULT_MARKER_COLOR,
+    STAIRS_ICON,
   } = Config;
 
   const [visible, setVisible] = useState(false);
@@ -108,8 +96,20 @@ const Marker: FC<MarkerPropsExtended> = ({
           },
           markerStyle,
         ]}
-        onPress={onMarkerPress}
-      />
+        onPress={onMarkerPress}>
+        <SvgUri
+          uri={isStairs ? String(STAIRS_ICON) : iconUrl}
+          style={[
+            styles.markerIcon,
+            {
+              width: iconSize,
+              height: iconSize,
+              transform: [{ rotate: `${iconRotate}deg` }],
+            },
+          ]}
+          fill={iconColor ?? 'black'}
+        />
+      </TouchableOpacity>
     </>
   );
 };
@@ -119,13 +119,17 @@ const styles = StyleSheet.create({
     width: 3,
     height: 3,
     position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textWrapper: {
     position: 'absolute',
-    backgroundColor: 'orange',
     padding: 4,
     borderRadius: 4,
     zIndex: 30000,
+  },
+  markerIcon: {
+    zIndex: 3000,
   },
 });
 export default Marker;

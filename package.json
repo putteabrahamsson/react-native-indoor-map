@@ -1,6 +1,6 @@
 {
   "name": "react-native-indoor-map",
-  "version": "2.0.11",
+  "version": "2.1.0",
   "description": "Renders indoor map as SVG",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -10,6 +10,7 @@
   },
   "author": "Patrick Abrahamsson",
   "license": "ISC",
+  "homepage": "https://github.com/putteabrahamsson/react-native-indoor-map",
   "keywords": [
     "react-native",
     "react",

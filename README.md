@@ -4,6 +4,8 @@ react-native-indoor-map is a library for displaying an indoor map built in svg-f
 
 Library for React Native - TypeScript
 
+- Feel free to send me a message for help or any customization that you need.
+
 - Scroll down to the bottom for exampel usage
 
 !! Still under Beta !!
